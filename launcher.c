@@ -29,9 +29,43 @@
 
 #include <stdio.h>
 #include <windows.h>
+
+#if !defined(_M_ARM)
+
 #include <Shlwapi.h>
 
 #pragma comment (lib, "Shlwapi.lib")
+
+#else
+
+wchar_t *
+StrStrIW(wchar_t * pSpace, const wchar_t * pSrch)
+{
+	size_t nSpace, nSrch, nLeft;
+    if (pSpace && pSrch && *pSpace && *pSrch && ((nSpace = nLeft = wcslen(pSpace)) >= (nSrch = wcslen(pSrch)))) {
+		wchar_t *pStart = pSpace;
+
+		// each time around this loop, pStart points to where we search from
+		while (nLeft >= nSrch) { // if long enough to be worth searching
+			const wchar_t * p1 = pStart;
+			const wchar_t * p2 = pSrch;
+
+			while (*p1 && *p2 && (towlower(*p1) == towlower(*p2))) {
+				++p1;
+				++p2;
+			}
+			// at this point, we've either hit the end of pSrch, or hit an inequality
+			if (*p2 == L'\0') {
+				return pStart;
+			}
+			++pStart;
+			--nLeft;
+		}
+	}
+	return NULL;
+}
+
+#endif
 
 #define APPENDED_ARCHIVE
 
