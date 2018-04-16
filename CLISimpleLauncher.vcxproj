@@ -129,6 +129,8 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">t64</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">t_arm</TargetName>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">t32</TargetName>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Link</CustomBuildAfterTargets>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Link</CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <OutDir>$(SolutionDir)dist\</OutDir>
@@ -154,6 +156,11 @@
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <CustomBuildStep>
+      <Command>python make_test.py</Command>
+      <Outputs>test\test.exe</Outputs>
+      <Inputs>$(OutDir)$(TargetName)$(TargetExt) make_test.py</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -178,6 +185,11 @@
       <SubSystem>Console</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
+    <CustomBuildStep>
+      <Command>python make_test.py</Command>
+      <Outputs>test\test.exe</Outputs>
+      <Inputs>$(OutDir)$(TargetName)$(TargetExt) make_test.py</Inputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <Midl />
